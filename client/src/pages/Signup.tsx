@@ -19,25 +19,65 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useForm } from "react-hook-form";
 import Head from "../components/Head";
+import { useCookies } from "react-cookie";
+import useCustomToast from "../hooks/useCustomToast";
+import { useMutation } from "react-query";
+import axios from "axios";
 
+type ResponeM = {
+  code: number;
+  message: string;
+};
+type SignupResponse = {
+  response: ResponeM;
+};
 const Signup = () => {
   const { colorMode } = useColorMode();
+  const [cookie, setCookie, removeCookie] = useCookies([
+    "token",
+    "role",
+    "user",
+  ]);
+  const toast = useCustomToast();
   const navigate = useNavigate();
-  const user = React.useContext(UserContext);
+  const { mutate, isLoading } = useMutation({
+    mutationKey: "singup",
+    mutationFn: async (credential): Promise<SignupResponse> => {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, credential);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast(data.response.message, "success");
+      if (data.response.code === 201)
+        navigate("/login")
+    },
+    onError: (data: any) => {
+      toast(data.response.data.message, "error");
+    }
+  });
+  
+  const onSubmit = (e: any) => {
+    mutate(e);
+  };
+
+  React.useEffect(() => {
+    if (cookie.role === undefined) {
+      removeCookie("role");
+      removeCookie("token");
+    }
+    if (cookie.role) {
+      cookie.role === "[ROLE_SELLER]"
+        ? navigate("/seller/dashboard")
+        : navigate("/");
+    }
+  }, [cookie, navigate, removeCookie]);
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-
-  console.log(errors);
-
-  React.useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
 
   return (
     <>
@@ -65,35 +105,33 @@ const Signup = () => {
               </Flex>
               <FormControl
                 isInvalid={
-                  errors.name ||
+                  errors.userName ||
                   errors.email ||
                   errors.password ||
                   errors.confirmPassword
                     ? true
                     : false
                 }
-                as={"form"}
-                id={"register"}
-                onSubmit={handleSubmit((e) => {
-                  console.log(e);
-                })}
+                as="form"
+                id="register"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                <Flex flexDir={"column"} gap={3} p={10} align={"center"}>
-                  <Flex flexDir={"column"} w={"25rem"}>
+                <Flex flexDir="column" gap={3} p={10} align="center">
+                  <Flex flexDir="column" w={"25rem"}>
                     <FormLabel>Name: </FormLabel>
                     <Input
-                      isInvalid={errors.name ? true : false}
+                      isInvalid={errors.userName ? true : false}
                       type={"text"}
                       required
-                      {...register("name", {
-                        pattern: /^[a-zA-Z ]+$/,
+                      {...register("userName", {
+                        pattern: /^[a-zA-Z0-9 ]+$/,
                       })}
                       id="name"
                     />
-                    {errors && errors.name ? (
-                      <FormErrorMessage>Invalid name</FormErrorMessage>
+                    {errors && errors.userName ? (
+                      <FormErrorMessage>Invalid username</FormErrorMessage>
                     ) : (
-                      <FormHelperText>Enter a valid name</FormHelperText>
+                      <FormHelperText>Enter a valid username</FormHelperText>
                     )}
                   </Flex>
                   <Flex flexDir={"column"} w={"25rem"}>
@@ -104,7 +142,7 @@ const Signup = () => {
                       {...register("email", {
                         pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                       })}
-                      id={"email"}
+                      id="email"
                     />
                     {errors.email ? (
                       <FormErrorMessage>Invalid email</FormErrorMessage>
@@ -147,7 +185,7 @@ const Signup = () => {
                           }
                         },
                       })}
-                      id={"confirm_password"}
+                      id="confirm_password"
                     />
                     {errors.confirm_password ? (
                       <FormErrorMessage>
@@ -157,7 +195,7 @@ const Signup = () => {
                       <FormHelperText>Re-enter password</FormHelperText>
                     )}
                   </Flex>
-                  <Button w={"25rem"} mt={3} type={"submit"}>
+                  <Button w={"25rem"} mt={3} type={"submit"} loadingText="Signing up" isLoading={isLoading}>
                     Sign Up
                   </Button>
                 </Flex>

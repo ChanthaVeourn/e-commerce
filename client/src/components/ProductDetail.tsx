@@ -49,9 +49,9 @@ const ProductDetail: React.FC<Product> = ({
             >
               <Image
                 src={
-                  images
+                    !!images && images?.length > 0
                     ? `${process.env.REACT_APP_API_URL}/resource/load-image/product/${images[0]}`
-                    : "logo.png"
+                    : "../logo.png"
                 }
                 alt={name}
                 rounded="md"
