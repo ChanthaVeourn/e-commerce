@@ -19,7 +19,7 @@ type ProductProps = {
   imageUrl: string;
 };
 
-const TrendingCard: React.FC<ProductProps> = ({id, name, qty, price, imageUrl}) => {
+const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }) => {
   const navigate = useNavigate();
   const colorMode = useColorMode();
   return (
