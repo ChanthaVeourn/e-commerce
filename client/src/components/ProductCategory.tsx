@@ -1,4 +1,4 @@
-import { Card, Box, Text, Image, useColorMode, CardBody, CardFooter, Container } from "@chakra-ui/react";
+import { Card, Box, Image, useColorMode, Container } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Head from "./Head";
 
