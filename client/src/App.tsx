@@ -12,6 +12,7 @@ import ProductsSeller from "./pages/seller/Products";
 import ProtectedSeller from "./components/protected/ProtectedSeller";
 import ProtectedCustomer from "./components/protected/ProtectedCustomer";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import Test from "./pages/seller/test";
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
         element={
           <ProtectedSeller>
             <ProductsSeller />
+          </ProtectedSeller>
+        }
+      />
+      <Route
+        path="/seller/test"
+        element={
+          <ProtectedSeller>
+            <Test />
           </ProtectedSeller>
         }
       />
