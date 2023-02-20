@@ -23,7 +23,7 @@ const Home: React.FC = () => {
     const products = productQuery.data.data.map((prod: any) => ({
       id: prod.id,
       name: prod.name,
-      qty: prod.qtu,
+      qty: prod.qty,
       price: prod.price,
       imageUrl: prod.images
         ? `${process.env.REACT_APP_API_URL}/resource/load-image/product/${prod.images[0]}`
