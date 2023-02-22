@@ -82,16 +82,17 @@ const Login = () => {
   }
 
   React.useEffect(() => {
-    if (cookie.role === undefined) {
+    if (!cookie.user || !cookie.role || !cookie.token) {
       removeCookie("role");
       removeCookie("token");
+      removeCookie("user");
     }
-    if (cookie.role) {
-      cookie.role === "[ROLE_SELLER]"
-        ? navigate("/seller/dashboard")
-        : navigate("/");
+    if (!!cookie.user && !!cookie.role && !!cookie.token) {
+        cookie.role === "[ROLE_SELLER]"
+          ? navigate("/seller/dashboard")
+          : navigate("/");
     }
-  }, [cookie, navigate, removeCookie]);
+  }, [cookie, navigate]);
 
   return (
     <>

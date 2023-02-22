@@ -26,7 +26,7 @@ const CategoryPage: React.FC = () => {
       name: prod.name,
       qty: prod.qty,
       price: prod.price,
-      imageUrl: `${process.env.REACT_APP_API_URL}/resource/load-image/product/${prod.images[0]}`,
+      imageUrl: prod.images?.length > 0 ? (`${process.env.REACT_APP_API_URL}/resource/load-image/product/${prod.images[0]}`) : '',
     }));
 
     return products.map((prod: any) => (

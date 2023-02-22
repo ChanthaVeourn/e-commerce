@@ -24,7 +24,7 @@ export default function CreateNewCategory() {
     <>
       <Button onClick={onOpen}>
         <BiPlus size={30} />
-        Create New Category
+        New Category
       </Button>
       <AlertDialog
         motionPreset="slideInBottom"

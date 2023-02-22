@@ -7,12 +7,11 @@ import Signup from "./pages/Signup";
 import CategoryPage from "./pages/CategoryPage";
 import ShopCartPage from "./pages/ShopCartPage";
 import DashBoard from "./pages/seller/DashBoard";
-import CategoriesSeller from "./pages/seller/CategoriesSeller";
 import ProductsSeller from "./pages/seller/Products";
 import ProtectedSeller from "./components/protected/ProtectedSeller";
 import ProtectedCustomer from "./components/protected/ProtectedCustomer";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import Test from "./pages/seller/test";
+import CategoryListPage from "./pages/seller/CategoryListPage";
 
 function App() {
   return (
@@ -39,14 +38,6 @@ function App() {
         }
       />
       <Route
-        path="/seller/categories"
-        element={
-          <ProtectedSeller>
-            <CategoriesSeller />
-          </ProtectedSeller>
-        }
-      />
-      <Route
         path="/seller/products"
         element={
           <ProtectedSeller>
@@ -55,11 +46,11 @@ function App() {
         }
       />
       <Route
-        path="/seller/test"
+        path="/seller/categories"
         element={
           <ProtectedSeller>
-            <Test />
-          </ProtectedSeller>
+            <CategoryListPage />
+            </ProtectedSeller>
         }
       />
     </Routes>
