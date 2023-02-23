@@ -7,11 +7,12 @@ import Signup from "./pages/Signup";
 import CategoryPage from "./pages/CategoryPage";
 import ShopCartPage from "./pages/ShopCartPage";
 import DashBoard from "./pages/seller/DashBoard";
-import ProductsSeller from "./pages/seller/Products";
 import ProtectedSeller from "./components/protected/ProtectedSeller";
 import ProtectedCustomer from "./components/protected/ProtectedCustomer";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CategoryListPage from "./pages/seller/CategoryListPage";
+import ProductListPage from "./pages/seller/ProductListPage";
+
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
         path="/seller/products"
         element={
           <ProtectedSeller>
-            <ProductsSeller />
+            <ProductListPage />
           </ProtectedSeller>
         }
       />
