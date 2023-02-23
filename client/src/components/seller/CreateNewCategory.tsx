@@ -17,7 +17,7 @@ import {
 import { useRef } from "react";
 import { BiPlus} from "react-icons/bi";
 import { BsImages } from "react-icons/bs";
-export default function CreateNewCategory() {
+const CreateNewCategory: React.FC<{refetch: VoidFunction}> = (refetch) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
   return (
@@ -74,3 +74,5 @@ export default function CreateNewCategory() {
     </>
   );
 }
+
+export default CreateNewCategory;
