@@ -46,7 +46,7 @@ const CategoryList: React.FC = () => {
         name: cat.name,
         imageUrl: !!cat.imageFileName
           ? `${process.env.REACT_APP_API_URL}/resource/load-image/category/${cat.imageFileName}`
-          : "../logo.png",
+          : null ,
       }));
 
   return (
@@ -109,6 +109,7 @@ const CategoryList: React.FC = () => {
                 <Td>
                   <Image
                     src={cat.imageUrl}
+                    fallbackSrc="../logo.png"
                     alt=""
                     borderRadius="lg"
                     w={[50, 120]}

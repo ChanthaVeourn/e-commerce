@@ -24,33 +24,30 @@ import { useCookies } from "react-cookie";
 import useCustomToast from "../../hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 
-const UpdateCategory: React.FC<{ name: string; imageUrl: any; id: number; refetch: VoidFunction }> = ({
-  name,
-  imageUrl,
-  id,
-  refetch
-}) => {
-  const navigate = useNavigate();
+const UpdateCategory: React.FC<{
+  name: string;
+  imageUrl: any;
+  id: number;
+  refetch: VoidFunction;
+}> = ({ name, imageUrl, id, refetch }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const formData = new FormData();
   const [cookie] = useCookies(["token"]);
-  const [catName, setCatName] = useState(name);
+  const [catName, setCatName] = useState<string>(name);
+  const [catImg, setCatImg] = useState<null | File>(null);
   const toast = useCustomToast();
   const Dropzone = () => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
-
-      formData.set("file", file);
+      setCatImg(file);
     }, []);
 
-    const { getRootProps, getInputProps } =
-      useDropzone({
-        onDrop,
-      });
+    const { getRootProps, getInputProps } = useDropzone({
+      onDrop,
+    });
 
     return (
-      <Box h={200} w={400} className="border rounded-md">
+      <Box h={200} w={400} className="border rounded-md" key={id}>
         <Flex
           flexDir={"column"}
           justify={"center"}
@@ -58,72 +55,89 @@ const UpdateCategory: React.FC<{ name: string; imageUrl: any; id: number; refetc
           h="100%"
           {...getRootProps({ className: "dropzone" })}
         >
-          {!formData.has("file") ? (
-              <>
-                <input {...getInputProps()} />
-                <BsImages size={40} />
-                <Text fontWeight={"bold"} fontSize={18}>
-                  Choose an image and drag it here
-                </Text>
-                <Text> Support (.jpg .jpeg .png .gif .svg)</Text>
-              </>
+          {!catImg ? (
+            <>
+              <input {...getInputProps()} />
+              <BsImages size={40} />
+              <Text fontWeight={"bold"} fontSize={18}>
+                Choose an image and drag it here
+              </Text>
+              <Text> Support (.jpg .jpeg .png .gif .svg)</Text>
+            </>
           ) : (
             <Text fontWeight={"bold"} fontSize={18}>
-              Click update to upload image
-          </Text>
+              Click <b>Update</b> to upload image
+            </Text>
           )}
         </Flex>
       </Box>
     );
   };
 
-  const handleSubmit = () => {
-    onClose();
-    let base = `${process.env.REACT_APP_API_URL}`
-    if (formData.has("file")) { 
-      !!imageUrl ? 
-        axios
-          .put(`${base}/seller/category/image/update/${id}`, formData, {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    let fetch = false;
+    const base = `${process.env.REACT_APP_API_URL}`;
+    if (catImg !== null) {
+
+      const formData = new FormData();
+      formData.set("file", catImg);
+      !!imageUrl
+        ? axios
+            .put(`${base}/seller/category/image/update/${id}`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${cookie.token}`,
+              },
+            })
+            .then(() => {
+              toast("Upload image successfully", "success");
+
+            })
+            .catch((err) => {
+              toast(err, "error");
+            }).finally(() => {              
+              setCatImg(null)
+              fetch = true})
+        : axios
+            .post(`${base}/seller/category/image/upload/${id}`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${cookie.token}`,
+              },
+            })
+            .then(() => {
+              toast("Upload image successfully", "success");
+            })
+            .catch((err) => {
+              toast(err, "error");
+            }).finally(() => {              
+              setCatImg(null)
+              fetch = true});
+
+    }
+    catName !== name &&
+      axios
+        .put(
+          `${base}/seller/category/${id}`,
+          { name: catName },
+          {
             headers: {
-              "Content-Type": "multipart/form-data",
-              "Authorization": `Bearer ${cookie.token}`
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookie.token}`,
             },
-          })
-          .then(() => {
-            toast("Upload image successfully", "success");
-          })
-          .catch((err) => {
-            toast(err, "error")
-          }) :
-          axios
-          .post(`${base}/seller/category/image/upload/${id}`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Authorization": `Bearer ${cookie.token}`
-            },
-          })
-          .then(() => {
-            toast("Upload image successfully", "success");
-          })
-          .catch((err) => {
-            toast(err, "error")
-          })
-      }
-      catName !== name && axios
-      .put(`${base}/seller/category/${id}`, {name: catName}, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${cookie.token}`
-        },
-      })
-      .then(() => {
-        toast("Updated category successfully", "success");
-      })
-      .catch((err) => {
-        toast(err, "error")
-      })
-      refetch()
-    };
+          }
+        )
+        .then(() => {
+          toast("Updated category successfully", "success");
+          fetch = true;
+        })
+        .catch((err) => {
+          toast(err, "error");
+        });
+        onClose();
+        refetch();
+  };
 
   return (
     <>
@@ -143,31 +157,40 @@ const UpdateCategory: React.FC<{ name: string; imageUrl: any; id: number; refetc
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader fontSize={23}>New Category</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            <Text fontSize={18} mb={2}>
-              Name
-            </Text>
-            <Input
-              defaultValue={name}
-              onChange={(e) => {
-                setCatName(e.target.value);
-              }}
-            />
-            <Text fontSize={18} my={2}>
-              Image
-            </Text>
-            <Dropzone />
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} colorScheme="orange" ml={3}>
-              Update
-            </Button>
-          </AlertDialogFooter>
+          <form onSubmit={handleSubmit}>
+            <AlertDialogHeader fontSize={23}>Update Category</AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              <Text fontSize={18} mb={2}>
+                Name
+              </Text>
+              <Input
+                defaultValue={name}
+                onChange={(e) => {
+                  setCatName(e.target.value);
+                }}
+              />
+              <Text fontSize={18} my={2}>
+                Image
+              </Text>
+              <Dropzone />
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button
+                ref={cancelRef}
+                onClick={() => {
+                  onClose();
+                  setCatImg(null);
+                  setCatName(name);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" colorScheme="orange" ml={3}>
+                Update
+              </Button>
+            </AlertDialogFooter>
+          </form>
         </AlertDialogContent>
       </AlertDialog>
     </>

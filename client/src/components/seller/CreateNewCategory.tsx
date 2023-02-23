@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   Box,
   Button,
@@ -15,11 +15,91 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { BiPlus} from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import { BsImages } from "react-icons/bs";
-const CreateNewCategory: React.FC<{refetch: VoidFunction}> = (refetch) => {
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import useCustomToast from "../../hooks/useCustomToast";
+
+const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = (refetch) => {
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
+  
+  const [cookie] = useCookies(["token"]);
+  const [catName, setCatName] = useState("");
+  const [catImg, setCatImg] = useState<null | File>(null);
+  const toast = useCustomToast();
+
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault();
+    alert(catImg + "  " + catName);
+  };
+
+  const Dropzone = () => {
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      setCatImg(file);
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({
+      onDrop,
+    });
+
+    return (
+      <Box h={200} w={400} className="border rounded-md">
+        <Flex
+          flexDir={"column"}
+          justify={"center"}
+          alignItems={"center"}
+          h="100%"
+          {...getRootProps({ className: "dropzone" })}
+        >
+          { !catImg ? (
+            <>
+              <input {...getInputProps()} />
+              <BsImages size={40} />
+              <Text fontWeight={"bold"} fontSize={18}>
+                Choose an image or drag it here
+              </Text>
+              <Text> Support (.jpg .jpeg .png .gif .svg)</Text>
+            </>
+          ) : (
+            <Text fontWeight={"bold"} fontSize={18}>
+              Click <b>Save</b> to upload image
+            </Text>
+          )}
+        </Flex>
+      </Box>
+    );
+  };
+
+  const handleSubmit = (id: any) => {
+    let base = `${process.env.REACT_APP_API_URL}`;
+
+    if (!!catImg) {
+      const formData = new FormData();
+
+      formData.set("file", catImg);
+      axios
+        .post(`${base}/seller/category/image/upload/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        })
+        .then(() => {
+          toast("Upload image successfully", "success");
+        })
+        .catch((err) => {
+          toast(err, "error");
+        });
+    }
+
+    setCatImg(null);
+  };
+
   return (
     <>
       <Button onClick={onOpen}>
@@ -36,43 +116,38 @@ const CreateNewCategory: React.FC<{refetch: VoidFunction}> = (refetch) => {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader fontSize={23}>New Category</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            <Text fontSize={18} mb={2}>
-              Category Name
-            </Text>
-            <Input placeholder="....."></Input>
-            <Text fontSize={18} my={2}>
-              Image
-            </Text>
-            <Box h={200} w={400} className="border rounded-md">
-              <Flex
-                flexDir={"column"}
-                justify={"center"}
-                alignItems={"center"}
-                h="100%"
-              >
-                <BsImages size={40} />
-                <Text fontWeight={"bold"} fontSize={18}>
-                  Choose a img or drag it here
-                </Text>
-                <Text> Support JPEG (.jpg .jpeg)</Text>
-              </Flex>
-            </Box>
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              No
-            </Button>
-            <Button colorScheme="orange" ml={3}>
-              Save
-            </Button>
-          </AlertDialogFooter>
+          <form onSubmit={handleFormSubmit}>
+            <AlertDialogHeader fontSize={23}>New Category</AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              <Text fontSize={18} mb={2}>
+                Category Name
+              </Text>
+              <Input
+                required
+                onChange={(e) => {
+                  setCatName(e.target.value);
+                }}
+                placeholder="....."
+              ></Input>
+              <Text fontSize={18} my={2}>
+                Image
+              </Text>
+              <Dropzone />
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                No
+              </Button>
+              <Button type="submit" colorScheme="orange" ml={3}>
+                Save
+              </Button>
+            </AlertDialogFooter>
+          </form>
         </AlertDialogContent>
       </AlertDialog>
     </>
   );
-}
+};
 
 export default CreateNewCategory;
