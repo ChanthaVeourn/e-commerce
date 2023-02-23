@@ -59,7 +59,7 @@ const ProductDetail: React.FC<Product> = ({
                 fallbackSrc="logo.png"
                 w="500px"
               />
-              {images ? (
+              {!!images && images?.length > 0 ? (
                 <Flex direction="row" flexWrap={"wrap"} gap={2} marginTop={4}>
                   {images.map((img: string, key: number) => (
                     <Image
@@ -69,6 +69,7 @@ const ProductDetail: React.FC<Product> = ({
                       objectFit="cover"
                       src={`${process.env.REACT_APP_API_URL}/resource/load-image/product/${img}`}
                       alt={name}
+                      fallbackSrc="../logo.png"
                       rounded="md"
                     />
                   ))}
@@ -105,7 +106,7 @@ const ProductDetail: React.FC<Product> = ({
             </div>
           </Flex>
         </Container>
-        {images ? (
+        {!!images && images?.length > 0 ?(
           <Container mx={"auto"} w="max">
             <Flex
               justifyContent={"center"}
@@ -128,7 +129,23 @@ const ProductDetail: React.FC<Product> = ({
             </Flex>
           </Container>
         ) : (
-          ""
+          <Container mx={"auto"} w="max">
+            <Flex
+              justifyContent={"center"}
+              alignItems="center"
+              gap={3}
+              direction="column"
+            >
+                <Image
+                  src="../logo.png"
+                  alt={name}
+                  minW={[200, 300]}
+                  maxW={[300, 600]}
+                  objectFit="cover"
+                  className="rounded-md mt-5"
+                />
+            </Flex>
+          </Container>
         )}
 
         <Container maxW={"8xl"} mb={"20"}>

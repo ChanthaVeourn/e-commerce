@@ -26,8 +26,7 @@ export default function ProductsSeller() {
   return (
     <>
       <Head title={"Products"} />
-      <Flex>
-        <DeshboardSidebar />
+        <DeshboardSidebar>
         <Box className="w-5/6">
           <Flex
             flexDir={"column"}
@@ -99,7 +98,7 @@ export default function ProductsSeller() {
             </AlertDialog>
           </Flex>
         </Box>
-      </Flex>
+        </DeshboardSidebar>
     </>
   );
 }

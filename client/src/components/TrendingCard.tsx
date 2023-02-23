@@ -44,9 +44,9 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
               />
               <Link to={`/productdetail/?id=${id}`}> 
             <Image
-              src={!!imageUrl ? imageUrl : 'logo.png'}
+              src={!!imageUrl ? imageUrl : '../logo.png'}
               alt={name}
-              fallbackSrc="logo.png"
+              fallbackSrc="../logo.png"
               borderRadius="lg"
               w={[100, 180, 240, 280, 320]}
               h={[

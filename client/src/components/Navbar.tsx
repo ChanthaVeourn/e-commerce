@@ -61,7 +61,7 @@ const Navbar = () => {
               </Heading>
             </Flex>
           </Link>
-          <form onSubmit={() =>{}}>
+          <form onSubmit={() => {}}>
             <Flex flexDir={"row"}>
               <Input
                 minW="30ch"
@@ -174,17 +174,21 @@ const Navbar = () => {
             />
 
             <MenuList>
-              {
-                user ? (
-                  <MenuGroup><MenuItem fontWeight={"semibold"} gap={2} alignItems={"center"} icon={<Avatar src={faker.image.people()} size={"sm"} />}>
-                  {user.name}
-                </MenuItem>
-                <hr/>
+              {user ? (
+                <MenuGroup>
+                  <MenuItem
+                    fontWeight={"semibold"}
+                    gap={2}
+                    alignItems={"center"}
+                    icon={<Avatar src={faker.image.people()} size={"sm"} />}
+                  >
+                    {user.name}
+                  </MenuItem>
+                  <hr />
                 </MenuGroup>
-                ) : (
-                  ""
-                )
-              }
+              ) : (
+                ""
+              )}
               <MenuGroup>
                 <MenuItem
                   className="hover:dark:text-yellow-400"
