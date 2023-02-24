@@ -5,6 +5,7 @@ import { Container, Flex, Grid, Text } from "@chakra-ui/react";
 import TrendingCard from "../components/TrendingCard";
 import { useQuery } from "react-query";
 import axios from "axios";
+import Slider from "../components/slider";
 
 const Home: React.FC = () => {
   const productQuery = useQuery({
@@ -72,8 +73,8 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxW={"8xl"}>
-        <Flex
+      <Container maxW={"8xl"}  boxShadow="base">
+        {/* <Flex
           boxShadow="base"
           p="6"
           rounded="md"
@@ -99,8 +100,10 @@ const Home: React.FC = () => {
               className="rounded-md"
             />
           </div>
-        </Flex>
+        </Flex> */}
+        <Slider/>
       </Container>
+      
 
       <Container maxW={"8xl"} py={2}>
         <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
