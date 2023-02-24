@@ -88,6 +88,7 @@ const Navbar = () => {
             gap={10}
             align={"center"}
             display={{ base: "none", xl: "flex" }}
+            zIndex={100}
           >
             <Box as="button" onClick={toggleColorMode}>
               {colorMode === "light" ? (
