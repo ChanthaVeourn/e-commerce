@@ -9,13 +9,12 @@ export default function Slider() {
   return (
     <>
       <Swiper
+          
         spaceBetween={50}
         slidesPerView={1}
         navigation={true}
         modules={[Navigation]}
-        autoplay={{
-          delay: 2000,
-        }}
+      style={{zIndex:"-10"}}
       >
         <SwiperSlide>
           <Flex
