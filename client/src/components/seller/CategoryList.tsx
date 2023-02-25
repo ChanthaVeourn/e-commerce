@@ -12,42 +12,19 @@ import {
   Container,
   useColorMode,
 } from "@chakra-ui/react";
-import axios from "axios";
 import React from "react";
-import { useCookies } from "react-cookie";
-import { ImBin } from "react-icons/im";
-import { useQuery } from "react-query";
 import CreateNewCategory from "./CreateNewCategory";
+import DeleteCategory from "./DeleteCategory";
 import UpdateCategory from "./UpdateCategory";
 
-const CategoryList: React.FC = () => {
-  const [cookie] = useCookies(["token"]);
+type Category = {
+        id: number,
+        name: string,
+        imageUrl: string | null
+}
+
+const CategoryList: React.FC<{categories: Category[], refetch: VoidFunction}> = ({categories, refetch}) => {
   const colorMode = useColorMode();
-
-  const categoriesQuery = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/seller/category/dropdown?page=0&size=40`,
-        {
-          headers: {
-            Authorization: `Bearer ${cookie.token ? cookie.token : ""}`,
-          },
-        },
-      );
-      return res.data;
-    },
-  });
-
-  const categories = !categoriesQuery.data
-    ? null
-    : categoriesQuery.data.data.map((cat: any) => ({
-        id: cat.id,
-        name: cat.name,
-        imageUrl: !!cat.imageFileName
-          ? `${process.env.REACT_APP_API_URL}/resource/load-image/category/${cat.imageFileName}`
-          : null ,
-      }));
 
   return (
     <Container padding={0} mx="auto" minW="max">
@@ -104,7 +81,7 @@ const CategoryList: React.FC = () => {
           </Thead>
           <Tbody>
             {categories.map((cat: any, key: number) => (
-              <Tr key={key}>
+              <Tr key={cat.id}>
                 <Td>{key + 1}</Td>
                 <Td>
                   <Image
@@ -120,8 +97,8 @@ const CategoryList: React.FC = () => {
                 <Td>103</Td>
                 <Td isNumeric>
                   <Flex gap={3}>
-                    <UpdateCategory refetch={() => {window.location.reload()}} {...cat} />
-                    <ImBin size={20} />
+                    <UpdateCategory refetch={refetch} {...cat} />
+                    <DeleteCategory refetch={refetch} {...cat}/>
                   </Flex>
                 </Td>
               </Tr>
@@ -139,7 +116,7 @@ const CategoryList: React.FC = () => {
             <Text fontWeight={"bold"} fontSize="5xl" mb={5}>
               No Category
             </Text>
-            <CreateNewCategory refetch={() => {}} />
+            <CreateNewCategory refetch={refetch} />
           </Flex>
         </Box>
       )}

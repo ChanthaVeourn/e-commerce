@@ -12,7 +12,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Image,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef } from "react";
@@ -22,7 +21,6 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import useCustomToast from "../../hooks/useCustomToast";
-import { useNavigate } from "react-router-dom";
 
 const UpdateCategory: React.FC<{
   name: string;
@@ -36,6 +34,8 @@ const UpdateCategory: React.FC<{
   const [catName, setCatName] = useState<string>(name);
   const [catImg, setCatImg] = useState<null | File>(null);
   const toast = useCustomToast();
+  const base = `${process.env.REACT_APP_API_URL}`;
+
   const Dropzone = () => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
@@ -74,12 +74,34 @@ const UpdateCategory: React.FC<{
     );
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    let fetch = false;
-    const base = `${process.env.REACT_APP_API_URL}`;
-    if (catImg !== null) {
+  const updateCate = () => {
+    axios
+      .put(
+        `${base}/seller/category/${id}`,
+        { name: catName },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then(() => {
+        refetch();
+        toast("Updated category successfully", "success");
+      })
+      .catch((err) => {
+        toast(err, "error");
+        onClose();
+      });
+  };
 
+  const handleSubmit = (e: any) => {
+    
+    e.preventDefault();
+
+    if (catImg !== null) {
+      console.log(catName, "cname")
       const formData = new FormData();
       formData.set("file", catImg);
       !!imageUrl
@@ -91,14 +113,19 @@ const UpdateCategory: React.FC<{
               },
             })
             .then(() => {
-              toast("Upload image successfully", "success");
-
+              if (catName !== name) updateCate();
+              else {
+                refetch();
+                toast("Upload image successfully", "success");
+              }
             })
             .catch((err) => {
               toast(err, "error");
-            }).finally(() => {              
-              setCatImg(null)
-              fetch = true})
+            })
+            .finally(() => {
+              onClose();
+              setCatImg(null);
+            })
         : axios
             .post(`${base}/seller/category/image/upload/${id}`, formData, {
               headers: {
@@ -107,36 +134,20 @@ const UpdateCategory: React.FC<{
               },
             })
             .then(() => {
-              toast("Upload image successfully", "success");
+              if (catName !== name) updateCate();
+              else {
+                refetch();
+                toast("Upload image successfully", "success");
+              }
             })
             .catch((err) => {
               toast(err, "error");
-            }).finally(() => {              
-              setCatImg(null)
-              fetch = true});
-
-    }
-    catName !== name &&
-      axios
-        .put(
-          `${base}/seller/category/${id}`,
-          { name: catName },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookie.token}`,
-            },
-          }
-        )
-        .then(() => {
-          toast("Updated category successfully", "success");
-          fetch = true;
-        })
-        .catch((err) => {
-          toast(err, "error");
-        });
-        onClose();
-        refetch();
+            })
+            .finally(() => {
+              onClose();
+              setCatImg(null);
+            });
+    } else catName !== name && updateCate();
   };
 
   return (

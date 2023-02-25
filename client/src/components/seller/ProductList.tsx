@@ -12,45 +12,26 @@ import {
   Container,
   useColorMode,
 } from "@chakra-ui/react";
-import axios from "axios";
 import React from "react";
-import { useCookies } from "react-cookie";
-import { FiMoreVertical } from "react-icons/fi";
-import { useQuery } from "react-query";
 import CreateNewProduct from "./CreateNewProduct";
 
-const CategoryList: React.FC = () => {
-  const [cookie] = useCookies(["token"]);
+export type Product = {
+  id: number;
+  name: string;
+  qty: number;
+  price: number;
+  image: string;
+};
+
+const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
+  products,
+  refetch,
+}) => {
   const colorMode = useColorMode();
-
-  const categoriesQuery = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/seller/category/dropdown?page=0&size=40`,
-        {
-          headers: {
-            Authorization: `Bearer ${cookie.token ? cookie.token : ""}`,
-          },
-        }
-      );
-      return res.data;
-    },
-  });
-
-  const categories = !categoriesQuery.data
-    ? null
-    : categoriesQuery.data.data.map((cat: any) => ({
-        id: cat.id,
-        name: cat.name,
-        imageUrl: !!cat.imageFileName
-          ? `${process.env.REACT_APP_API_URL}/resource/load-image/category/${cat.imageFileName}`
-          : "../logo.png",
-      }));
 
   return (
     <Container padding={0} mx="auto" minW="max">
-      {categories ? (
+      {products ? (
         <Table size="lg" boxShadow="xs" rounded="md">
           <Thead borderRadius={5}>
             <Tr className="dark:text-white text-gray-800">
@@ -88,7 +69,7 @@ const CategoryList: React.FC = () => {
                 position="sticky"
                 fontSize="md"
               >
-                Category
+                Quantity
               </Th>
               <Th
                 bg={colorMode.colorMode === "dark" ? "gray.600" : "orange.200"}
@@ -97,7 +78,7 @@ const CategoryList: React.FC = () => {
                 position="sticky"
                 fontSize="md"
               >
-                Qty
+                Unit Price
               </Th>
               <Th
                 bg={colorMode.colorMode === "dark" ? "gray.600" : "orange.200"}
@@ -109,111 +90,29 @@ const CategoryList: React.FC = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>
-                <Image
-                  src=""
-                  alt=""
-                  borderRadius="lg"
-                  w={[50, 120]}
-                  h={[30, 90]}
-                />
-              </Td>
-              <Td>Men Shoes</Td>
-              <Td>Shoes</Td>
-              <Td>130</Td>
-              <Td isNumeric>
-                <Flex gap={3}>
-                  <p>View Detail </p>
-                  <FiMoreVertical size={20}/>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>2</Td>
-              <Td>
-                <Image
-                  src=""
-                  alt=""
-                  borderRadius="lg"
-                  w={[50, 120]}
-                  h={[30, 90]}
-                />
-              </Td>
-              <Td>Men Shoes</Td>
-              <Td>Shoes</Td>
-              <Td>130</Td>
-              <Td isNumeric>
-                <Flex gap={3}>
-                  <p>View Detail </p>
-                  <FiMoreVertical size={20}/>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>3</Td>
-              <Td>
-                <Image
-                  src=""
-                  alt=""
-                  borderRadius="lg"
-                  w={[50, 120]}
-                  h={[30, 90]}
-                />
-              </Td>
-              <Td>Men Shoes</Td>
-              <Td>Shoes</Td>
-              <Td>130</Td>
-              <Td isNumeric>
-                <Flex gap={3}>
-                  <p>View Detail </p>
-                  <FiMoreVertical size={20}/>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>4</Td>
-              <Td>
-                <Image
-                  src=""
-                  alt=""
-                  borderRadius="lg"
-                  w={[50, 120]}
-                  h={[30, 90]}
-                />
-              </Td>
-              <Td>Men Shoes</Td>
-              <Td>Shoes</Td>
-              <Td>130</Td>
-              <Td isNumeric>
-                <Flex gap={3}>
-                  <p>View Detail </p>
-                  <FiMoreVertical size={20}/>
-                </Flex>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>5</Td>
-              <Td>
-                <Image
-                  src=""
-                  alt=""
-                  borderRadius="lg"
-                  w={[50, 120]}
-                  h={[30, 90]}
-                />
-              </Td>
-              <Td>Men Shoes</Td>
-              <Td>Shoes</Td>
-              <Td>130</Td>
-              <Td isNumeric>
-                <Flex gap={3}>
-                  <p>View Detail </p>
-                  <FiMoreVertical size={20}/>
-                </Flex>
-              </Td>
-            </Tr>
+            {products.map((pro: Product, key: number) => (
+              <Tr key={pro.id}>
+                <Td>{key + 1}</Td>
+                <Td>
+                  <Image
+                    src={pro.image}
+                    fallbackSrc="../logo.png"
+                    alt=""
+                    borderRadius="lg"
+                    w={[50, 120]}
+                    h={[30, 90]}
+                  />
+                </Td>
+                <Td>{pro.name}</Td>
+                <Td>{pro.qty}</Td>
+                <Td>{pro.price}</Td>
+                <Td isNumeric>
+                  <Flex gap={3}>
+                   {/* Todo handle detail button */}
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       ) : (
@@ -235,4 +134,4 @@ const CategoryList: React.FC = () => {
   );
 };
 
-export default CategoryList;
+export default ProductList;

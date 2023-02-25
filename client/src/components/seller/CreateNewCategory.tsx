@@ -22,19 +22,67 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import useCustomToast from "../../hooks/useCustomToast";
 
-const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = (refetch) => {
-  
+const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = ({
+  refetch,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  
+
   const [cookie] = useCookies(["token"]);
   const [catName, setCatName] = useState("");
   const [catImg, setCatImg] = useState<null | File>(null);
   const toast = useCustomToast();
 
+  const base = `${process.env.REACT_APP_API_URL}`;
+
+  const uploadImage = (id: number) => {
+    if (catImg === null) {
+      refetch();
+      return;
+    }
+    const formData = new FormData();
+    formData.set("file", catImg);
+    axios
+      .post(`${base}/seller/category/image/upload/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then(() => {
+        refetch();
+      })
+      .catch((err) => {
+        toast(err, "error");
+      })
+      .finally(() => {
+        setCatImg(null);
+      });
+  };
+
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
-    alert(catImg + "  " + catName);
+    axios
+      .post(
+        `${base}/seller/category/`,
+        { name: catName },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        uploadImage(res.data.data.id);
+      })
+      .catch((err) => {
+        toast(err.response.data.message, "error");
+      })
+      .finally(() => {
+        onClose();
+        toast("Upload image successfully", "success");
+      });
   };
 
   const Dropzone = () => {
@@ -56,7 +104,7 @@ const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = (refetch) => {
           h="100%"
           {...getRootProps({ className: "dropzone" })}
         >
-          { !catImg ? (
+          {!catImg ? (
             <>
               <input {...getInputProps()} />
               <BsImages size={40} />
@@ -73,31 +121,6 @@ const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = (refetch) => {
         </Flex>
       </Box>
     );
-  };
-
-  const handleSubmit = (id: any) => {
-    let base = `${process.env.REACT_APP_API_URL}`;
-
-    if (!!catImg) {
-      const formData = new FormData();
-
-      formData.set("file", catImg);
-      axios
-        .post(`${base}/seller/category/image/upload/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${cookie.token}`,
-          },
-        })
-        .then(() => {
-          toast("Upload image successfully", "success");
-        })
-        .catch((err) => {
-          toast(err, "error");
-        });
-    }
-
-    setCatImg(null);
   };
 
   return (
