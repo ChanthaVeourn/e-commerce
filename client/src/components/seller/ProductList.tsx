@@ -11,8 +11,10 @@ import {
   Text,
   Container,
   useColorMode,
+  Button,
 } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
 import CreateNewProduct from "./CreateNewProduct";
 
 export type Product = {
@@ -108,7 +110,9 @@ const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
                 <Td>{pro.price}</Td>
                 <Td isNumeric>
                   <Flex gap={3}>
-                   {/* Todo handle detail button */}
+                    <Link to={`/seller/products/detail?id=${pro.id}`}>
+                      <Button>Detail</Button>
+                    </Link>
                   </Flex>
                 </Td>
               </Tr>
@@ -126,7 +130,7 @@ const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
             <Text fontWeight={"bold"} fontSize="5xl" mb={5}>
               No Product
             </Text>
-            <CreateNewProduct />
+            <CreateNewProduct refetch={refetch} />
           </Flex>
         </Box>
       )}

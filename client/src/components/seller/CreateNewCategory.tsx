@@ -159,7 +159,7 @@ const CreateNewCategory: React.FC<{ refetch: VoidFunction }> = ({
               <Dropzone />
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button ref={cancelRef} onClick={() => {onClose(); setCatImg(null)}}>
                 No
               </Button>
               <Button type="submit" colorScheme="orange" ml={3}>

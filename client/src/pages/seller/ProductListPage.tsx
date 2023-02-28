@@ -23,14 +23,11 @@ export default function ProductListPage() {
   };
 
   const fetch = async () => {
-    
- 
     axios
       .get(
         `${process.env.REACT_APP_API_URL}/customer/view-product/search?query=${query}&page=${page}&size=${size}`
       )
       .then((res) => {
-        console.log(res.data.data, "pares")
         const pros: any[] = res.data.data.map((pro: any) => ({
           id: pro.id,
           name: pro.name,
@@ -90,7 +87,7 @@ export default function ProductListPage() {
                 </Box>
               </Flex>
             </form>
-            <CreateNewProduct />
+            <CreateNewProduct refetch={fetch}/>
           </Flex>
           <ProductList
             products={products}

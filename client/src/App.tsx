@@ -12,7 +12,7 @@ import ProtectedCustomer from "./components/protected/ProtectedCustomer";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CategoryListPage from "./pages/seller/CategoryListPage";
 import ProductListPage from "./pages/seller/ProductListPage";
-
+import ProductDetailSellerPage from "./pages/seller/ProductDetailSellerPage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/productdetail" element={<ProductDetailPage />} />
-      <Route path="/category" element={<CategoryPage/>} />
+      <Route path="/category" element={<CategoryPage />} />
       <Route
         path="/shoppingcart"
         element={
@@ -51,11 +51,18 @@ function App() {
         element={
           <ProtectedSeller>
             <CategoryListPage />
-            </ProtectedSeller>
+          </ProtectedSeller>
+        }
+      />
+      <Route
+        path="/seller/products/detail"
+        element={
+          <ProtectedSeller>
+            <ProductDetailSellerPage />
+          </ProtectedSeller>
         }
       />
     </Routes>
-
   );
 }
 

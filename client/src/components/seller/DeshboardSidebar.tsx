@@ -49,7 +49,7 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
             flexBasis={1 / 5}
             position="fixed"
             zIndex={50}
-            className="backdrop-blur-2xl"
+            className="backdrop-blur-2xl max-sm:hidden"
           >
             <Link to={"/seller/dashboard"}>
               <Flex
@@ -59,7 +59,7 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
                 align={"center"}
                 h="10vh "
               >
-                <Image src="../logo.png" w={20} />
+                <Image src="../../logo.png" w={20} />
                 <Heading minW="max" size={"lg"} color={"heading"}>
                   Cool Ecommerce
                 </Heading>
