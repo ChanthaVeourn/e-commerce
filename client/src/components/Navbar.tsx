@@ -53,6 +53,7 @@ const Navbar = () => {
           justify={"space-between"}
           align={"center"}
         >
+          {/* Logo */}
           <Link to={"/"}>
             <Flex className="logo" gap={3} align={"center"}>
               <Image src="../logo.png" w={20} />
@@ -61,7 +62,9 @@ const Navbar = () => {
               </Heading>
             </Flex>
           </Link>
-          <form onSubmit={() => {}}>
+          {/* End Logo */}
+          {/* serach btn */}
+          <form onSubmit={() => {}} className='form-serach flex flex-col'>
             <Flex flexDir={"row"}>
               <Input
                 minW="30ch"
@@ -83,6 +86,8 @@ const Navbar = () => {
               </Box>
             </Flex>
           </form>
+          {/* End serach btn */}
+          
           <Flex
             flexDir={"row"}
             gap={10}
@@ -172,11 +177,12 @@ const Navbar = () => {
               _hover={{ bg: "gray.100" }}
               icon={<GoThreeBars />}
               display={{ base: "flex", xl: "none" }}
+              
             />
 
-            <MenuList>
+            <MenuList zIndex={100} >
               {user ? (
-                <MenuGroup>
+                <MenuGroup >
                   <MenuItem
                     fontWeight={"semibold"}
                     gap={2}
@@ -190,7 +196,7 @@ const Navbar = () => {
               ) : (
                 ""
               )}
-              <MenuGroup>
+              <MenuGroup >
                 <MenuItem
                   className="hover:dark:text-yellow-400"
                   fontWeight={"bold"}
