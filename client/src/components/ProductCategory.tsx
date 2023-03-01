@@ -47,7 +47,7 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({
             fallbackSrc={"logo.png"}
             borderRadius={5}
           />
-          <Container position="absolute" borderBottomRadius={5} mx="auto" bottom={0} bg={colorMode.colorMode === 'dark' ? 'gray.500' : "gray.300"} fontSize={["md", "lg"]} fontWeight={"bold"}>
+          <Container position="absolute" borderBottomRadius={5} mx="auto" bottom={0} bg={colorMode.colorMode === 'dark' ? 'gray.500' : "gray.300"} fontSize={{ base: "sm", xl: "lg" }} fontWeight={"bold"}>
             {name}
           </Container>
           

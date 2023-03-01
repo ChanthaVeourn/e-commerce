@@ -61,7 +61,8 @@ const Navbar = () => {
               </Heading>
             </Flex>
           </Link>
-          <form onSubmit={() => {}}>
+           {/* serach btn */}
+          <form onSubmit={() => {}} className='form-serach'>
             <Flex flexDir={"row"}>
               <Input
                 minW="30ch"
@@ -83,6 +84,7 @@ const Navbar = () => {
               </Box>
             </Flex>
           </form>
+           {/* End serach btn */}
           <Flex
             flexDir={"row"}
             gap={10}
