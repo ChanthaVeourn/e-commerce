@@ -73,7 +73,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxW={"8xl"} boxShadow="base">
+      <Container maxW={"8xl"} boxShadow="base " rounded='md'>
         <Slider />
       </Container>
 

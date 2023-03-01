@@ -2,8 +2,16 @@ import { Box, Button, Container, Flex, Image, Text } from "@chakra-ui/react";
 import Head from "../components/Head";
 import Layout from "../components/Layout";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { useState } from "react";
 
 export default function ShopCartPage() {
+  const [qty , setQty] = useState(0);
+  const handelIncrease =()=>{
+    setQty(qty+1)
+  }
+  const handelDesIncreas =()=>{
+    setQty(qty-1)
+  }
   return (
     <>
       <Head title={"ShopCartPage"} />
@@ -34,11 +42,11 @@ export default function ShopCartPage() {
                   <h1 className="text-lg font-bold">XX.XX$</h1>
                   <p className="mt-5">PREDATOR PRECISION.3 FIRM GROUND BOOTS</p>
                   <Flex className="mt-5">
-                    <div>
+                    <div onClick={handelDesIncreas}>
                       <AiOutlineMinus className="text-2xl border p-1 rounded-full " />
                     </div>
-                    <div className="mx-2 font-bold">1</div>
-                    <div>
+                    <div className="mx-2 font-bold">{qty}</div>
+                    <div onClick={handelIncrease}>
                       <AiOutlinePlus className="text-2xl border  p-1 rounded-full" />
                     </div>
                   </Flex>
@@ -59,11 +67,11 @@ export default function ShopCartPage() {
                     PREDATOR PRECISION.3 FIRM GROUND BOOTS{" "}
                   </p>
                   <Flex className="mt-5">
-                    <div>
+                  <div onClick={handelDesIncreas}>
                       <AiOutlineMinus className="text-2xl border p-1 rounded-full " />
                     </div>
-                    <div className="mx-2 font-bold">2</div>
-                    <div>
+                    <div className="mx-2 font-bold">{qty}</div>
+                    <div onClick={handelIncrease}>
                       <AiOutlinePlus className="text-2xl border  p-1 rounded-full" />
                     </div>
                   </Flex>

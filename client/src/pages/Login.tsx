@@ -52,7 +52,10 @@ const Login = () => {
     mutationFn: async (credential): Promise<LoginResponse> => {
       // TO-DO: Security Vulnerability
       // Exposed unencrypted password
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, credential);
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        credential
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -88,9 +91,9 @@ const Login = () => {
       removeCookie("user");
     }
     if (!!cookie.user && !!cookie.role && !!cookie.token) {
-        cookie.role === "[ROLE_SELLER]"
-          ? navigate("/seller/dashboard")
-          : navigate("/");
+      cookie.role === "[ROLE_SELLER]"
+        ? navigate("/seller/dashboard")
+        : navigate("/");
     }
   }, [cookie, navigate]);
 
@@ -107,7 +110,7 @@ const Login = () => {
       >
         <Flex minH={"100vh"} flexDir={"column"} justifyContent={"center"}>
           <Flex flexDir={"row"} justifyContent={"center"} align={"center"}>
-            <Flex flexDir={"column"} gap={2} w={"50%"}>
+            <Flex flexDir={"column"} gap={2} w={"50%"} className='login'>
               <Flex flexDir={"column"} align="center">
                 <Image src="./logo.png" w={"20"} />
                 <Heading>welcome back</Heading>
