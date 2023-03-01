@@ -17,7 +17,6 @@ const ProductDetailSellerPage = () => {
         )}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${cookie.token}`,
           },
         }
