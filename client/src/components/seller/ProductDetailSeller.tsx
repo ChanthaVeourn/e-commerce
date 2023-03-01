@@ -101,10 +101,10 @@ const ProductDetailSeller: React.FC<{
                 bg={colorMode.colorMode === "dark" ? "slategray" : "orange.100"}
               >
                 {images.map((img: string, key: number) => (
-                  <Box position="relative">
+                  <Box 
+                  key={key} position="relative">
                     <Image
                       shadow="lg"
-                      key={key}
                       minW={100}
                       maxW={200}
                       boxSize={[100, 200]}
@@ -121,7 +121,7 @@ const ProductDetailSeller: React.FC<{
                   ))}
                 </Grid>
               ) : (
-                ""
+                "No Image to load. Please Upload Images."
               )}
             </Flex>
           </Flex>

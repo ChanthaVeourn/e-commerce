@@ -52,7 +52,6 @@ const UpdateProduct: React.FC<{ refetch: VoidFunction }> = ({ refetch }) => {
         `${process.env.REACT_APP_API_URL}/seller/product/${params.get("id")}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${cookie.token}`,
           },
         }
@@ -63,10 +62,11 @@ const UpdateProduct: React.FC<{ refetch: VoidFunction }> = ({ refetch }) => {
         setProQty(product.qty);
         setProPrice(product.price);
         setProDesc(product.description);
-        setProCatId(product.categories[0].id);
+        setProCatId(product.categories[0]?.id);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        console.log(err, "fsasdf")
+        toast("fetch product error", "error");
       });
   };
 
@@ -142,7 +142,7 @@ const UpdateProduct: React.FC<{ refetch: VoidFunction }> = ({ refetch }) => {
         uploadImage(res.data.data.id);
       })
       .catch((err) => {
-        toast(err.response.data.message, "error");
+        toast(err.response, "error");
       })
       .finally(() => {
         onClose();
