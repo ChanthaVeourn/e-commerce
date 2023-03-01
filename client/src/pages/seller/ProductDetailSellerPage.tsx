@@ -37,7 +37,7 @@ const ProductDetailSellerPage = () => {
   return (
       <>
       <DeshboardSidebar>
-        <ProductDetailSeller {...pDtail} />
+        <ProductDetailSeller {...pDtail} refetch={fetchDetail}  />
       </DeshboardSidebar>
       </>
     );
