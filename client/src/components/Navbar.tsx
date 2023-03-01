@@ -90,6 +90,7 @@ const Navbar = () => {
             gap={10}
             align={"center"}
             display={{ base: "none", xl: "flex" }}
+            zIndex={100}
           >
             <Box as="button" onClick={toggleColorMode}>
               {colorMode === "light" ? (
@@ -175,7 +176,7 @@ const Navbar = () => {
               display={{ base: "flex", xl: "none" }}
             />
 
-            <MenuList>
+            <MenuList zIndex={100}>
               {user ? (
                 <MenuGroup>
                   <MenuItem

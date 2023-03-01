@@ -81,7 +81,7 @@ const Home: React.FC = () => {
         <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
           Product Categories
         </Text>
-        <Grid templateColumns={{ base: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }} gap={6}>
+        <Grid templateColumns={{ base: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }} gap={6} className='product-category'>
           {renderCategory()}
         </Grid>
       </Container>
