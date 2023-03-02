@@ -40,6 +40,7 @@ const ProductDetail: React.FC<Product> = ({
             rounded="md"
             justify={"center"}
             className="max-sm:flex-col"
+        
           >
             <Flex
               direction="column"
@@ -49,7 +50,7 @@ const ProductDetail: React.FC<Product> = ({
             >
               <Image
                 src={
-                    !!images && images?.length > 0
+                  !!images && images?.length > 0
                     ? `${process.env.REACT_APP_API_URL}/resource/load-image/product/${images[0]}`
                     : "../logo.png"
                 }
@@ -78,8 +79,8 @@ const ProductDetail: React.FC<Product> = ({
                 ""
               )}
             </Flex>
-            <div className="basis-1/3 ml-20">
-              <div className="max-sm:hidden">
+            <div className="basis-1/3 max-sm:mt-5 self-center ">
+              <div className="">
                 {/* <Stack direction={"column"} className="min-w-max">
                 <Flex direction={"row"} justify="space-between" alignItems={"center"} className="">
                   <h5 className="mt-3">{product.data.price}$</h5>
@@ -87,26 +88,41 @@ const ProductDetail: React.FC<Product> = ({
                 <Text minW={[350, 600]}>
                   {product.data.name}
                 </Text>
-              </Stack> */}
-                <Text className="" fontWeight={"bold"} fontSize={["sm", "md"]}>
+                </Stack> */}
+                <Text className="max-sm:text-center" fontWeight={"bold"} fontSize={["xl", "2xl"]} >
                   {name}
                 </Text>
-                <Text fontSize={["md", "lg"]} className="mt-3">
-                  {price}$
-                </Text>
-                <Text fontSize="sm" className="mt-3">
-                  Stock {qty}
-                </Text>
-                <Button colorScheme="gray" w={[200, 400]} className="mt-5">
-                  Add to Cart
-                </Button>
+                <div className="max-sm:flex">
+                  <div>
+                    <Text
+                      fontSize={{ base: "15px", md: "15px", xl: "xl" }}
+                      fontWeight={"bold"}
+                      className="mt-3"
+                    >
+                      {price}$
+                    </Text>
+                    <Text fontSize="sm" className="mt-3">
+                      Stock {qty}
+                    </Text>
+                  </div>
+                  <div>
+                    <Button
+                      colorScheme="gray"
+                      w={[100, 200]}
+                      className="mt-5 mx-auto max-sm:ml-10"
+
+                    >
+                      Add to Cart
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <h2 className="mt-20 text-2xl">Description</h2>
+              <h2 className="max-sm:mt-5 mt-20 text-2xl max-sm:text-center">Description</h2>
               <p>{description}</p>
             </div>
           </Flex>
         </Container>
-        {!!images && images?.length > 0 ?(
+        {!!images && images?.length > 0 ? (
           <Container mx={"auto"} w="max">
             <Flex
               justifyContent={"center"}
@@ -136,14 +152,14 @@ const ProductDetail: React.FC<Product> = ({
               gap={3}
               direction="column"
             >
-                <Image
-                  src="../logo.png"
-                  alt={name}
-                  minW={[200, 300]}
-                  maxW={[300, 600]}
-                  objectFit="cover"
-                  className="rounded-md mt-5"
-                />
+              <Image
+                src="../logo.png"
+                alt={name}
+                minW={[200, 300]}
+                maxW={[300, 600]}
+                objectFit="cover"
+                className="rounded-md mt-5"
+              />
             </Flex>
           </Container>
         )}
