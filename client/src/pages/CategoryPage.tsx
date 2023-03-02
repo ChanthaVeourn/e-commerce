@@ -42,7 +42,7 @@ const CategoryPage: React.FC = () => {
           <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
             {params.get("name")}
           </Text>
-          <Grid templateColumns="repeat(4, 1fr)" gap={8}>
+          <Grid templateColumns={{ base: "repeat(2, 1fr)",sm:"repeat(3, 1fr)",md:"repeat(4, 1fr)", xl: "repeat(5, 1fr)" }} gap={8}>
             {renderProducts()}
           </Grid>
         </Container>

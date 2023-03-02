@@ -7,6 +7,7 @@ import {
   Stack,
   Divider,
   useColorMode,
+  Button,
 } from "@chakra-ui/react";
 import { MdShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,11 +30,12 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
           maxW="sm"
           _hover={{
             shadow:
-              "0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 6px 5px 0 rgba(0, 0, 0, 0.1)",
+              "0px 0px 20px 0px rgba(0, 0, 0, 0.1), 0 6px 5px 0 rgba(0, 0, 0, 0.1)",
           }}
+         transition={'0.5s'}
         >
-          <CardBody>
-              <Icon
+          <CardBody p={0}>
+              {/* <Icon
                 className="shopicon"
                 as={MdShoppingCart}
                 boxSize={6}
@@ -41,27 +43,30 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
                 margin={"2"}
                 onClick={() => navigate("/shoppingcart")}
                 zIndex={10}
-              />
+              /> */}
               <Link to={`/productdetail/?id=${id}`}> 
             <Image
               src={!!imageUrl ? imageUrl : '../logo.png'}
               alt={name}
               fallbackSrc="../logo.png"
-              borderRadius="lg"
-              w={[100, 180, 240, 280, 320]}
-              h={[
-                (100 * 2) / 3,
-                (180 * 2) / 3,
-                (240 * 2) / 3,
-                (280 * 2) / 3,
-                (320 * 2) / 3,
-              ]}
+              borderTopRadius={'lg'}
+              // w={[100, 180, 240, 280, 320]}
+              className='trending-img'
+              w={'100%'}
+              // h={[
+              //   (100 * 3) / 4,
+              //   (180 * 3) / 4,
+              //   (240 * 3) / 4,
+              //   (280 * 3) / 4,
+              //   (320 * 3) / 4,
+              // ]}
+             
             />
-            <Stack mt="6" spacing="1">
-              <Text fontSize="xl">
+            <Stack mt="6" spacing="1" px={3} pb={2}>
+              <Text fontSize={{ base: "15px",md: "15px", xl: "xl" }} fontWeight={"bold"}>
                 ${price}
               </Text>
-              <Text fontSize={"sm"}>
+              <Text fontSize={{ base: "10px",md: "15px", xl: "xl" }} className="pro_name">
                 {name}
               </Text>
               <Text fontSize={"sm"}>Stock {qty}</Text>

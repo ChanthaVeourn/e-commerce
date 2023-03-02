@@ -21,6 +21,7 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({
      
         <Card position={"relative"} as="a" onClick={() => navigate(`/category/?id=${id}&name=${name}`)}
           w={[100, 180, 240, 280, 320]}
+        
           h={[
             (100 * 2) / 3,
             (180 * 2) / 3,
@@ -35,6 +36,7 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({
           <Image
             objectFit="cover"
             w={[100, 180, 240, 280, 320]}
+           
             h={[
               (100 * 2) / 3,
               (180 * 2) / 3,
