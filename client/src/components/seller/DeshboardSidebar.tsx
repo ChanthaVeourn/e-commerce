@@ -47,9 +47,9 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
             minW="max"
             boxShadow="2xl "
             flexBasis={1 / 5}
-            position="fixed"
+            // position="fixed"
             zIndex={50}
-            className="backdrop-blur-2xl max-sm:hidden"
+            className="backdrop-blur-2xl max-md:hidden"
           >
             <Link to={"/seller/dashboard"}>
               <Flex
@@ -60,13 +60,13 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
                 h="10vh "
               >
                 <Image src="../../logo.png" w={20} />
-                <Heading minW="max" size={"lg"} color={"heading"}>
+                <Heading minW="max" size={"md"} color={"heading"} pr={2}>
                   Cool Ecommerce
                 </Heading>
               </Flex>
             </Link>
             <hr />
-            <Flex flexDir={"column"} marginTop={"10"}>
+            <Flex flexDir={"column"} marginTop={"5"}>
               <Link to={"/seller/dashboard"}>
                 <Box
                   _hover={{ bgColor: "heading" }}

@@ -79,7 +79,7 @@ const ProductDetail: React.FC<Product> = ({
                 ""
               )}
             </Flex>
-            <div className="basis-1/3 max-md:mt-5 self-center ">
+            <div className="basis-1/3 max-md:mt-5 self-center max-lg:ml-10">
               <div className="">
                 {/* <Stack direction={"column"} className="min-w-max">
                 <Flex direction={"row"} justify="space-between" alignItems={"center"} className="">

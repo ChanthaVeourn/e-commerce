@@ -33,19 +33,23 @@ const ProductDetailSeller: React.FC<{
   ];
   images: string[];
   refetch: VoidFunction;
-}> = ({ id, name, qty, price, description, categories,images, refetch }) => {
+}> = ({ id, name, qty, price, description, categories, images, refetch }) => {
   const colorMode = useColorMode();
   return (
     <>
       <Head title={"Product Detail"} />
-      <Container mx="auto">
+      <Container mx='auto'>
         <Heading textAlign="center" my={5}>
           Product Detail
         </Heading>
-        <Flex p="6" rounded="md" justify={"center"}>
+        <Flex p="6" rounded="md" flexDir={"column"} gap={10}>
           <div className="basis-1/2">
             <div className="">
-              <Text className="" fontWeight={"bold"} fontSize={["sm", "md"]}>
+              <Text
+                className="text-center"
+                fontWeight={"bold"}
+                fontSize={["sm", "lg"]}
+              >
                 {name}
               </Text>
               <Text fontSize={["sm", "md"]} className="mt-3">
@@ -69,21 +73,23 @@ const ProductDetailSeller: React.FC<{
                 ))}
               </List>
             </div>
-            <Text fontSize={["md", "lg"]} mt={3}>
-              Description
-            </Text>
-            <Text paddingLeft={5} fontSize={["sm", "md"]}>
-              {description}
-            </Text>
-            <Flex mt="5" justifyContent="space-evenly">
-            <UpdateProduct refetch={refetch} />
-              <ImBin
-                size="25"
-                className={`text-${
-                  colorMode.colorMode === "dark" ? "red-400" : "red-300"
-                }`}
-              />
-            </Flex>
+            <div className="">
+              <Text fontSize={["md", "lg"]} mt={3} className={""}>
+                Description
+              </Text>
+              <Text paddingLeft={5} fontSize={["sm", "md"]}>
+                {description}
+              </Text>
+              <Flex mt="5" justifyContent="space-evenly">
+                <UpdateProduct refetch={refetch} />
+                <ImBin
+                  size="25"
+                  className={`text-${
+                    colorMode.colorMode === "dark" ? "red-400" : "red-300"
+                  }`}
+                />
+              </Flex>
+            </div>
           </div>
           <Flex
             direction="column"
@@ -101,8 +107,7 @@ const ProductDetailSeller: React.FC<{
                 bg={colorMode.colorMode === "dark" ? "slategray" : "orange.100"}
               >
                 {images.map((img: string, key: number) => (
-                  <Box 
-                  key={key} position="relative">
+                  <Box key={key} position="relative">
                     <Image
                       shadow="lg"
                       minW={100}
@@ -115,17 +120,23 @@ const ProductDetailSeller: React.FC<{
                       fallbackSrc="../../logo.png"
                       rounded="md"
                     />
-                    <BsTrashFill className="absolute top-1 right-1 bg-slate-400 rounded-full p-1 hover:text-red-500" size={25}/>
-                    <FaPencilAlt className="absolute top-1 right-10 bg-slate-400 rounded-full p-1 hover:text-orange-500" size={25}/>
-                    </Box>
-                  ))}
-                </Grid>
-              ) : (
-                "No Image to load. Please Upload Images."
-              )}
-            </Flex>
+                    <BsTrashFill
+                      className="absolute top-1 right-1 bg-slate-400 rounded-full p-1 hover:text-red-500"
+                      size={25}
+                    />
+                    <FaPencilAlt
+                      className="absolute top-1 right-10 bg-slate-400 rounded-full p-1 hover:text-orange-500"
+                      size={25}
+                    />
+                  </Box>
+                ))}
+              </Grid>
+            ) : (
+              "No Image to load. Please Upload Images."
+            )}
           </Flex>
-        </Container>
+        </Flex>
+      </Container>
     </>
   );
 };
