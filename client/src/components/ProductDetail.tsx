@@ -39,7 +39,7 @@ const ProductDetail: React.FC<Product> = ({
             p="6"
             rounded="md"
             justify={"center"}
-            className="max-sm:flex-col"
+            className="max-md:flex-col"
         
           >
             <Flex
@@ -79,7 +79,7 @@ const ProductDetail: React.FC<Product> = ({
                 ""
               )}
             </Flex>
-            <div className="basis-1/3 max-sm:mt-5 self-center ">
+            <div className="basis-1/3 max-md:mt-5 self-center ">
               <div className="">
                 {/* <Stack direction={"column"} className="min-w-max">
                 <Flex direction={"row"} justify="space-between" alignItems={"center"} className="">
@@ -89,10 +89,10 @@ const ProductDetail: React.FC<Product> = ({
                   {product.data.name}
                 </Text>
                 </Stack> */}
-                <Text className="max-sm:text-center" fontWeight={"bold"} fontSize={["xl", "2xl"]} >
+                <Text className="max-md:text-center" fontWeight={"bold"} fontSize={["xl", "2xl"]} >
                   {name}
                 </Text>
-                <div className="max-sm:flex">
+                <div className="max-md:flex">
                   <div>
                     <Text
                       fontSize={{ base: "15px", md: "15px", xl: "xl" }}
@@ -109,7 +109,7 @@ const ProductDetail: React.FC<Product> = ({
                     <Button
                       colorScheme="gray"
                       w={[100, 200]}
-                      className="mt-5 mx-auto max-sm:ml-10"
+                      className="mt-5 mx-auto max-md:ml-10"
 
                     >
                       Add to Cart
@@ -117,8 +117,8 @@ const ProductDetail: React.FC<Product> = ({
                   </div>
                 </div>
               </div>
-              <h2 className="max-sm:mt-5 mt-20 text-2xl max-sm:text-center">Description</h2>
-              <p>{description}</p>
+              <h2 className="max-md:mt-5 mt-20 text-2xl max-md:text-center">Description</h2>
+              <p className="max-md:text-center">{description}</p>
             </div>
           </Flex>
         </Container>
