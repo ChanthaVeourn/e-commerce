@@ -8,6 +8,7 @@ import {
   Divider,
   useColorMode,
   Button,
+  CardFooter,
 } from "@chakra-ui/react";
 import { MdShoppingCart } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,34 +36,38 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
          transition={'0.5s'}
         >
           <CardBody p={0}>
-              {/* <Icon
-                className="shopicon"
+              <Icon
                 as={MdShoppingCart}
-                boxSize={6}
-                _hover={  {textColor: (colorMode.colorMode === 'dark') ? "white" : "gray.600" }}
+                boxSize={8}
+                _hover={  {textColor: (colorMode.colorMode === 'dark') ? "orange.300" : "orange.600" }}
                 margin={"2"}
                 onClick={() => navigate("/shoppingcart")}
                 zIndex={10}
-              /> */}
+                className="absolute right-1 top-1 rounded-full border border-gray-400 p-1"
+              />
               <Link to={`/productdetail/?id=${id}`}> 
             <Image
               src={!!imageUrl ? imageUrl : '../logo.png'}
               alt={name}
               fallbackSrc="../logo.png"
               borderTopRadius={'lg'}
-              // w={[100, 180, 240, 280, 320]}
-              className='trending-img'
-              w={'100%'}
-              // h={[
-              //   (100 * 3) / 4,
-              //   (180 * 3) / 4,
-              //   (240 * 3) / 4,
-              //   (280 * 3) / 4,
-              //   (320 * 3) / 4,
-              // ]}
-             
+              w={[139, 180, 240, 280, 320]}
+              h={[
+                (139 * 3) / 4,
+                (180 * 3) / 4,
+                (240 * 3) / 4,
+                (280 * 3) / 4,
+                (320 * 3) / 4,
+              ]}
+              bgClip="content-box"
+            //  className="max-sm:w-[139px] max-sm:h-[139px]  bg-cover"
             />
-            <Stack mt="6" spacing="1" px={3} pb={2}>
+            </Link>
+          </CardBody>
+          
+          <Divider />
+          <CardFooter>
+          <Stack mt="6" spacing="1" px={3} pb={2}>
               <Text fontSize={{ base: "15px",md: "15px", xl: "xl" }} fontWeight={"bold"}>
                 ${price}
               </Text>
@@ -71,9 +76,7 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
               </Text>
               <Text fontSize={"sm"}>Stock {qty}</Text>
             </Stack>
-            </Link>
-          </CardBody>
-          <Divider />
+          </CardFooter>
         </Card>
     </>
   );

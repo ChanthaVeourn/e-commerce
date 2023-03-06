@@ -92,8 +92,7 @@ const UpdateCategory: React.FC<{
       })
       .catch((err) => {
         toast(err, "error");
-        onClose();
-      });
+      }).finally(() => {onClose()});
   };
 
   const handleSubmit = (e: any) => {

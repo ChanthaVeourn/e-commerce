@@ -13,7 +13,7 @@ export default function CategoryListPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [cookie] = useCookies(["token"]);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(3);
+  const [size, setSize] = useState(5);
   const [query, setQuery] = useState<string>("");
   const [totalCategories, setTotalCategories] = useState(0);
 
