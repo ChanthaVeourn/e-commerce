@@ -16,7 +16,7 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BiCart,
@@ -39,43 +39,47 @@ import { GoThreeBars } from "react-icons/go";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [q, setQ] = useState("");
   const navigate = useNavigate();
   const user: any = React.useContext(UserContext);
   const [, , removeCookie] = useCookies(["user", "token", "role"]);
   const toast = useCustomToast();
 
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    window.location.href = `/products?q=${q}`;
+  };
+
   return (
     <>
-      <Container maxW={"8xl"} py={2}>
-        <Flex
-          flexDir={"row"}
-          className={"w-full"}
-          justify={"space-between"}
-          align={"center"}
-        >
+      <Container maxW="10xl" mb="5" py="2" position="sticky" top="0" zIndex="50" backdropBlur={"md"} bgColor={colorMode === "dark" ? "whiteAlpha.100" : "gray.100"}>
+        <Flex minW="max-content" justify={"space-between"} align={"center"}>
           <Link to={"/"}>
             <Flex className="logo" gap={3} align={"center"}>
               <Image src="../logo.png" w={20} />
-              <Heading size={"lg"} color={"heading"}>
+              <Heading size={"lg"} className="max-sm:hidden" color={"heading"}>
                 Cool Ecommerce
               </Heading>
             </Flex>
           </Link>
-           {/* serach btn */}
-          <form onSubmit={() => {}} className='form-serach'>
+          {/* serach btn */}
+          <form onSubmit={handleSearch} className="form-serach">
             <Flex flexDir={"row"}>
               <Input
-                minW="30ch"
-                maxW="40ch"
-                outline={"none"}
+                maxW="50ch"
+                outline="none"
                 borderRightRadius="0"
-                borderColor={colorMode === "dark" ? "gray.500" : "gray.300"}
+                borderRight="0"
+                onChange={(e) => {
+                  setQ(e.target.value);
+                }}
+                borderColor={colorMode === "dark" ? "white.100" : "orange.300"}
               />
               <Box
                 as="button"
                 type="submit"
                 className={
-                  "bg-orange-400 hover:bg-orange-300 dark:bg-orange-200 flex justify-center items-center rounded-r-lg"
+                  "bg-orange-300 hover:bg-orange-400 flex justify-center items-center rounded-r-lg"
                 }
                 w={"14"}
                 h={"10"}
@@ -84,7 +88,6 @@ const Navbar = () => {
               </Box>
             </Flex>
           </form>
-           {/* End serach btn */}
           <Flex
             flexDir={"row"}
             gap={10}

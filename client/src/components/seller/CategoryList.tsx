@@ -94,7 +94,7 @@ const CategoryList: React.FC<{categories: Category[], refetch: VoidFunction}> = 
                   />
                 </Td>
                 <Td>{cat.name}</Td>
-                <Td>103</Td>
+                <Td>100</Td>
                 <Td isNumeric>
                   <Flex gap={3}>
                     <UpdateCategory refetch={refetch} {...cat} />

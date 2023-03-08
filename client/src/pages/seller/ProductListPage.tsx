@@ -12,7 +12,7 @@ import ProductList from "../../components/seller/ProductList";
 export default function ProductListPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
+  const [size, setSize] = useState(4);
   const [query, setQuery] = useState<string>("");
   const [totalProducts, setTotalProducts] = useState(0);
 

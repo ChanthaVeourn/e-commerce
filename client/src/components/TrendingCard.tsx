@@ -68,13 +68,13 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
           <Divider />
           <CardFooter>
           <Stack mt="6" spacing="1" px={3} pb={2}>
-              <Text fontSize={{ base: "15px",md: "15px", xl: "xl" }} fontWeight={"bold"}>
+              <Text className="max-sm:text-sm text-base" fontWeight={"bold"}>
                 ${price}
               </Text>
-              <Text fontSize={{ base: "10px",md: "15px", xl: "xl" }} className="pro_name">
+              <Text className="max-sm:text-sm text-base" >
                 {name}
               </Text>
-              <Text fontSize={"sm"}>Stock {qty}</Text>
+              <Text className="max-sm:text-xs text-sm" >Stock {qty}</Text>
             </Stack>
           </CardFooter>
         </Card>

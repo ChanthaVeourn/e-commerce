@@ -13,6 +13,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CategoryListPage from "./pages/seller/CategoryListPage";
 import ProductListPage from "./pages/seller/ProductListPage";
 import ProductDetailSellerPage from "./pages/seller/ProductDetailSellerPage";
+import SearchResultPage from "./pages/SearchResultPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/productdetail" element={<ProductDetailPage />} />
       <Route path="/category" element={<CategoryPage />} />
+      <Route path="/products" element={<SearchResultPage />} />
       <Route
         path="/shoppingcart"
         element={

@@ -48,7 +48,7 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
             minW="max"
             boxShadow="2xl "
             flexBasis={1 / 5}
-            // position="fixed"
+            position="fixed"
             zIndex={50}
             className="backdrop-blur-2xl max-md:hidden"
           >

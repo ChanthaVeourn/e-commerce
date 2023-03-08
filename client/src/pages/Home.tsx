@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import ProductCategory from "../components/ProductCategory";
 import { Container, Flex, Grid, Text } from "@chakra-ui/react";
@@ -6,22 +6,36 @@ import TrendingCard from "../components/TrendingCard";
 import { useQuery } from "react-query";
 import axios from "axios";
 import Slider from "../components/slider";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+let total = 0;
+let page = 0;
+const fetch = (productQuery: any, setProductQuery: any, setHasMore: any) => {
+  axios
+    .get(
+      `${process.env.REACT_APP_API_URL}/customer/view-product/?page=${page}&size=20`
+    )
+    .then((res) => {
+      console.log(productQuery);
+      setProductQuery([...productQuery, ...res.data.data]);
+      total = res.data.total;
+      if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
+      console.log(page, "asdsdf")
+      page++;
+    });
+};
 
 const Home: React.FC = () => {
-  const productQuery = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/customer/view-product`
-      );
-      return res.data;
-    },
-    retry: 2,
-  });
+  const [productQuery, setProductQuery] = useState<any>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    fetch(productQuery, setProductQuery, setHasMore);
+  }, []);
 
   const renderProducts = () => {
-    if (!productQuery.data) return;
-    const products = productQuery.data.data.map((prod: any) => ({
+    if (!productQuery) return;
+    const products = productQuery.map((prod: any) => ({
       id: prod.id,
       name: prod.name,
       qty: prod.qty,
@@ -73,15 +87,19 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxW={"8xl"} boxShadow="base " rounded='md'>
-         <Slider />
+      <Container maxW={"8xl"} boxShadow="base " rounded="md">
+        <Slider />
       </Container>
 
       <Container maxW={"8xl"} py={2}>
         <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
           Product Categories
         </Text>
-        <Grid templateColumns={{ base: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }} gap={6} className='product-category'>
+        <Grid
+          templateColumns={{ base: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }}
+          gap={6}
+          className="product-category"
+        >
           {renderCategory()}
         </Grid>
       </Container>
@@ -90,15 +108,31 @@ const Home: React.FC = () => {
         <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
           In Trending
         </Text>
-        <Grid templateColumns={{ base: "repeat(2, 1fr)",sm:"repeat(3, 1fr)",md:"repeat(4, 1fr)", xl: "repeat(5, 1fr)" }} gap={8}>
-          {renderProducts()}
-        </Grid>
+        <Container maxW={"8xl"} mb={"20"}>
+          <InfiniteScroll
+            dataLength={20}
+            next={() => {
+              fetch(productQuery, setProductQuery, setHasMore);
+            }}
+            hasMore={hasMore}
+            loader={<h4>Loading...</h4>}
+          >
+            <Grid
+              templateColumns={{
+                base: "repeat(2, 1fr)",
+                sm: "repeat(3, 1fr)",
+                md: "repeat(4, 1fr)",
+                xl: "repeat(5, 1fr)",
+              }}
+              gap={8}
+            >
+              {renderProducts()}
+            </Grid>
+          </InfiniteScroll>
+        </Container>
       </Container>
     </Layout>
   );
 };
 
 export default Home;
-function typeOf(data: any) {
-  throw new Error("Function not implemented.");
-}
