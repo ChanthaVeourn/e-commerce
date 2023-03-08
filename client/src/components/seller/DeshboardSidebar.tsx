@@ -44,6 +44,7 @@ const DeshboardSidebar: React.FC<PropsWithChildren> = ({ children }) => {
         <Flex>
           <Box
             h="100vh "
+            maxH="100vh"
             minW="max"
             boxShadow="2xl "
             flexBasis={1 / 5}
