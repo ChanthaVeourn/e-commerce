@@ -71,7 +71,7 @@ const TrendingCard: React.FC<ProductProps> = ({ id, name, qty, price, imageUrl }
               <Text className="max-sm:text-sm text-base" fontWeight={"bold"}>
                 ${price}
               </Text>
-              <Text className="max-sm:text-sm text-base" >
+              <Text className="max-sm:text-sm text-base pro_name" >
                 {name}
               </Text>
               <Text className="max-sm:text-xs text-sm" >Stock {qty}</Text>

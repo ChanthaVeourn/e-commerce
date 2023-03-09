@@ -52,7 +52,7 @@ const Navbar = () => {
 
   return (
     <>
-      <Container maxW="10xl" mb="5" py="2" position="sticky" top="0" zIndex="50" backdropBlur={"md"} bgColor={colorMode === "dark" ? "whiteAlpha.100" : "gray.100"}>
+      <Container maxW="10xl" mb="5" py="2" position="sticky" top="0" zIndex="50" backdropBlur={"md"} bgColor={colorMode === "dark" ? "#2d3748" : "gray.100"}>
         <Flex minW="max-content" justify={"space-between"} align={"center"}>
           <Link to={"/"}>
             <Flex className="logo" gap={3} align={"center"}>
@@ -63,7 +63,7 @@ const Navbar = () => {
             </Flex>
           </Link>
           {/* serach btn */}
-          <form onSubmit={handleSearch} className="form-serach">
+          <form onSubmit={handleSearch} className="form-serach max-sm:w-44">
             <Flex flexDir={"row"}>
               <Input
                 maxW="50ch"
