@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import Slider from "../components/slider";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ScrollToTop from "react-scroll-to-top";
 
 let total = 0;
 let page = 0;
@@ -20,7 +21,7 @@ const fetch = (productQuery: any, setProductQuery: any, setHasMore: any) => {
       setProductQuery([...productQuery, ...res.data.data]);
       total = res.data.total;
       if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
-      console.log(page, "asdsdf")
+      console.log(page, "asdsdf");
       page++;
     });
 };
@@ -130,6 +131,9 @@ const Home: React.FC = () => {
             </Grid>
           </InfiniteScroll>
         </Container>
+        <div>
+          <ScrollToTop smooth style={{width:"30px"}}/>
+        </div>
       </Container>
     </Layout>
   );
