@@ -25,7 +25,7 @@ const fetch = (productQuery: any, setProductQuery: any, setHasMore: any, q: any)
 };
 
 const SearchResultPage: React.FC = () => {
-  
+
   const [params] = useSearchParams();
   const [q] = useState(params.get("q"));
   const [hasMore, setHasMore] = useState(true);
