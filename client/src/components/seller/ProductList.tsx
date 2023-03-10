@@ -32,7 +32,7 @@ const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
   const colorMode = useColorMode();
 
   return (
-    <Container padding={0} mx="auto" minW="max">
+    <Container padding={0}  minW="max">
       {products ? (
         <Table size="lg" boxShadow="xs" rounded="md">
           <Thead borderRadius={5}>
@@ -61,6 +61,7 @@ const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
                 top={0}
                 position="sticky"
                 fontSize="md"
+
               >
                 Product Title
               </Th>
