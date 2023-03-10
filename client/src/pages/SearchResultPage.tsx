@@ -6,33 +6,43 @@ import { useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import TrendingCard from "../components/TrendingCard";
 
-
-let total = 0;
-let page = 0;
-const fetch = (productQuery: any, setProductQuery: any, setHasMore: any, q: any) => {
-  axios
-    .get(
-      `${process.env.REACT_APP_API_URL}/customer/view-product/search?query=${q}&page=${page}&size=20`
-    )
-    .then((res) => {
-      console.log(productQuery);
-      setProductQuery([...productQuery, ...res.data.data]);
-      total = res.data.total;
-      if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
-      console.log(page, "asdsdf")
-      page++;
-    });
-};
-
 const SearchResultPage: React.FC = () => {
-
   const [params] = useSearchParams();
   const [q] = useState(params.get("q"));
   const [hasMore, setHasMore] = useState(true);
   const [productQuery, setProductQuery] = useState<any>([]);
 
+  let total = 0;
+  let page = 0;
+  const fetch = (
+    productQuery: any,
+    setProductQuery: any,
+    setHasMore: any,
+    q: any
+  ) => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/customer/view-product/search?query=${q}&page=${page}&size=20`
+      )
+      .then((res) => {
+        setProductQuery([...productQuery, ...res.data.data]);
+        if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
+        page++;
+      });
+  };
+
   useEffect(() => {
-    fetch(productQuery, setProductQuery, setHasMore, q);
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/customer/view-product/search?query=${q}&page=${page}&size=20`
+      )
+      .then((res) => {
+        console.log(productQuery);
+        setProductQuery([...productQuery, ...res.data.data]);
+        total = res.data.total;
+        if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
+        page++;
+      });
   }, []);
 
   const renderProducts = () => {
@@ -56,14 +66,14 @@ const SearchResultPage: React.FC = () => {
   return (
     <>
       <Layout>
-      <Container maxW={"8xl"} mb={"20"}>
+        <Container maxW={"8xl"} mb={"20"}>
           <InfiniteScroll
             dataLength={20}
             next={() => {
               fetch(productQuery, setProductQuery, setHasMore, q);
             }}
             hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
+            loader={""}
           >
             <Grid
               templateColumns={{
