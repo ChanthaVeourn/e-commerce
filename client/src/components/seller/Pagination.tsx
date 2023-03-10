@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
-export const throttle = (func: any, delay: number) => {
+const throttle = (func: any, delay: number) => {
   let wait = false;
   return () => {
     if (wait) {

@@ -15,9 +15,9 @@ const useCustomToast: () => (
       title,
       status,
       position: "top",
-      duration: 3000,
+      duration: 2500,
       isClosable: true,
-      variant: `${colorMode === "light" ? "subtle" : "solid"}`,
+      variant: `${colorMode === "light" ? "subtle" : "solid"}`
     });
   };
 };

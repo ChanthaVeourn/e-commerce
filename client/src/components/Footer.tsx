@@ -12,10 +12,6 @@ export default function Footer() {
                 <Heading size={"lg"} color={"heading"}>
                   Cool Ecommerce
                 </Heading>
-                <h5 className="text-lg mt-0 mb-2 ">
-                  Welcome to my Website.....
-                </h5>
-                {/* icon */}
                 <div className="mt-6 lg:mb-0 mb-6 flex">
                   <button
                     type="button"
@@ -44,19 +40,10 @@ export default function Footer() {
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
-                <div className="flex flex-wrap items-top mb-6">
-                  {/* <div className="w-full text-center px-4 ml-auto">
-                    <Text className="block  text-blueGray-500 text-2xl font-semibold mb-2 text-orange-300" >
-                      Address
-                    </Text>
-                    <p>                      
-                      Royal University of Phnom Penh (RUPP) Russian Federation
-                      Boulevard, Toul Kork, Phnom Penh, Cambodia.{" "}
-                    </p>
-                  </div> */}
+                <div className="flex flex-wrap items-top">
                   <div className="w-full lg:w-4/12 px-4">
                     <span className="block uppercase text-blueGray-500 text-sm font-semibold mb-2 text-orange-400">
-                      Useful Links
+                      UseFul Links
                     </span>
                     <ul>
                       <Link
@@ -64,12 +51,6 @@ export default function Footer() {
                         className=" hover:text-gray-600 font-semibold block pb-2 text-sm"
                       >
                         About Us
-                      </Link>
-                      <Link
-                        to={"/"}
-                        className="hover:text-gray-600 font-semibold block pb-2 text-sm"
-                      >
-                        Blog
                       </Link>
                       <Link
                         to={"/"}

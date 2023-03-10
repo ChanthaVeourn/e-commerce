@@ -6,7 +6,12 @@ import {
   Image,
   Grid,
   Heading,
+  useColorMode,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import useCustomToast from "../hooks/useCustomToast";
 import Head from "./Head";
 import Layout from "./Layout";
 
@@ -27,7 +32,37 @@ const ProductDetail: React.FC<Product> = ({
   description,
   images,
 }) => {
+
+  const navigate = useNavigate();
+  const [cookie] = useCookies(["token"]);
+  const toast = useCustomToast();
+  
+  const handleAddtoCart = (e: any) => {
+    e.preventDefault();
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/customer/cart/add-to-cart`,
+        {
+          productId: id,
+          qty: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token ? cookie.token : ""}`,
+          },
+        }
+      )
+      .then(() => {
+        toast("Added to cart", "success");
+      })
+      .catch((err) => {
+        toast("Please login to continue", "error");
+        if (err.response.status === 401) navigate("/login");
+      });
+  };
+
   return (
+
     <>
       <Head title={"Product Detail"} />
       <Layout>
@@ -56,9 +91,10 @@ const ProductDetail: React.FC<Product> = ({
                 }
                 alt={name}
                 rounded="md"
-                objectFit={"contain"}
+                objectFit={"cover"}
                 fallbackSrc="logo.png"
-                w="500px"
+                minW={100}
+                boxSize={[100, 200, 300]}
               />
               {!!images && images?.length > 0 ? (
                 <Flex direction="row" flexWrap={"wrap"} gap={2} marginTop={4}>
@@ -110,7 +146,7 @@ const ProductDetail: React.FC<Product> = ({
                       colorScheme="gray"
                       w={[100, 200]}
                       className="mt-5 mx-auto max-md:ml-10"
-
+                      onClick={handleAddtoCart}
                     >
                       Add to Cart
                     </Button>
@@ -164,12 +200,12 @@ const ProductDetail: React.FC<Product> = ({
           </Container>
         )}
 
-        <Container maxW={"8xl"} mb={"20"}>
+        {/* <Container maxW={"8xl"} mb={"20"}>
           <Text className="mt-10 mb-5" fontWeight={"bold"} fontSize="3xl">
             Similar Products
           </Text>
           <Grid templateColumns="repeat(4, 1fr)" gap={8}></Grid>
-        </Container>
+        </Container> */}
       </Layout>
     </>
   );
