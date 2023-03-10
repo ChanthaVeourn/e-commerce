@@ -9,29 +9,34 @@ import Slider from "../components/slider";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ScrollToTop from "react-scroll-to-top";
 
-let total = 0;
-let page = 0;
-const fetch = (productQuery: any, setProductQuery: any, setHasMore: any) => {
-  axios
-    .get(
-      `${process.env.REACT_APP_API_URL}/customer/view-product/?page=${page}&size=20`
-    )
-    .then((res) => {
-      console.log(productQuery);
-      setProductQuery([...productQuery, ...res.data.data]);
-      total = res.data.total;
-      if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
-      console.log(page, "asdsdf");
-      page++;
-    });
-};
-
 const Home: React.FC = () => {
   const [productQuery, setProductQuery] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
+  let total = 0;
+  const [page, setPage] = useState(0);
+  const fetch = (productQuery: any, setProductQuery: any, setHasMore: any) => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/customer/view-product/?page=${page}&size=20`
+      )
+      .then((res) => {
+        setProductQuery([...productQuery, ...res.data.data]);
+        if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
+        setPage(page + 1);
+      });
+  };
 
   useEffect(() => {
-    fetch(productQuery, setProductQuery, setHasMore);
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/customer/view-product/?page=${page}&size=20`
+      )
+      .then((res) => {
+        setProductQuery([...productQuery, ...res.data.data]);
+        total = res.data.total;
+        if (page + 1 === Math.ceil(total / 20)) setHasMore(false);
+        setPage(page + 1);
+      });
   }, []);
 
   const renderProducts = () => {
@@ -116,7 +121,8 @@ const Home: React.FC = () => {
               fetch(productQuery, setProductQuery, setHasMore);
             }}
             hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
+            loader={""}
+          
           >
             <Grid
               templateColumns={{
@@ -132,7 +138,7 @@ const Home: React.FC = () => {
           </InfiniteScroll>
         </Container>
         <div>
-          <ScrollToTop smooth style={{width:"30px"}}/>
+          <ScrollToTop smooth style={{ width: "30px" }} />
         </div>
       </Container>
     </Layout>

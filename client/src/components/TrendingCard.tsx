@@ -37,20 +37,20 @@ const TrendingCard: React.FC<ProductProps> = ({
         maxW="sm"
         _hover={{
           shadow:
-            "0px 0px 20px 0px rgba(0, 0, 0, 0.1), 0 6px 5px 0 rgba(0, 0, 0, 0.1)",          
-      
+            "0px 0px 20px 0px rgba(0, 0, 0, 0.1), 0 6px 5px 0 rgba(0, 0, 0, 0.1)",
         }}
         transition={"0.5s"}
-        
-        // padding={"10px"}
       >
         <CardBody p={0}>
           <Icon
             as={MdShoppingCart}
-            boxSize={8}
+            boxSize={7}
+            color={
+                colorMode.colorMode === "dark" ? "orange.400" : "orange.400"
+            }
             _hover={{
               textColor:
-                colorMode.colorMode === "dark" ? "orange.300" : "orange.600",
+                colorMode.colorMode === "dark" ? "orange.300" : "orange.500",
             }}
             margin={"2"}
             onClick={() => navigate("/shoppingcart")}
@@ -80,10 +80,7 @@ const TrendingCard: React.FC<ProductProps> = ({
         <Divider />
         <CardFooter>
           <Stack mt="6" spacing="1" px={3} pb={2}>
-            <Text
-              className="max-sm:text-sm text-base text-orange-400"
-              fontWeight={"bold"}
-            >
+            <Text className="max-sm:text-sm text-base" fontWeight={"bold"}>
               ${price}
             </Text>
             <Text className="max-sm:text-sm text-base pro_name">{name}</Text>
