@@ -63,22 +63,21 @@ const Home: React.FC = () => {
         `${process.env.REACT_APP_API_URL}/customer/category/dropdown?page=0&size=6`
       );
       return res.data;
-    },
-    retry: 2,
+    }
   });
 
   const renderCategory = () => {
     if (!categoryQuery.data) return;
     const categories =
-      categoryQuery.data instanceof Object
-        ? categoryQuery.data.data.map((cate: any) => ({
+      !!categoryQuery.data
+        ? categoryQuery?.data.data.map((cate: any) => ({
             id: cate.id,
             name: cate.name,
             imageUrl: cate.imageFileName
               ? `${process.env.REACT_APP_API_URL}/resource/load-image/category/${cate.imageFileName}`
               : "",
           }))
-        : categoryQuery.data.map((cate: any) => ({
+        : categoryQuery?.data.map((cate: any) => ({
             id: cate.id,
             name: cate.name,
             imageUrl: cate.imageFileName

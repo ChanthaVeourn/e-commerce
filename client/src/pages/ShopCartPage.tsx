@@ -15,25 +15,14 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const throttle = (func: any, delay: number) => {
-  let wait = false;
-  return () => {
-    if (wait) {
-      return;
-    }
-    func();
-    wait = true;
-    setTimeout(() => {
-      wait = false;
-    }, delay);
-  };
-};
+import { debounce } from "lodash";
 
 export default function ShopCartPage() {
   const [cookie] = useCookies(["token"]);
   const [carts, setCarts] = useState<any>(null);
-  const colorMode = useColorMode();
+  const [inc, setInc] = useState<any>(null);
+  const [itemId, setItemId] = useState<number>(0);
+  const [update, setUpdate] = useState<boolean>(false);
 
   const fetch = () => {
     axios
@@ -51,6 +40,46 @@ export default function ShopCartPage() {
   useEffect(() => {
     fetch();
   }, []);
+
+  useEffect(() => {
+    !!inc && handleQuantityChange(itemId, inc);
+  }, [update]);
+
+  const handleQuantityChange = (productId: number, change: number) => {
+    setCarts((prevCarts: { items: any[] }) => {
+      const newItems = prevCarts.items.map((item: any) => {
+        if (item.id === productId) {
+          item.qty = item.qty + change;
+        }
+        return item;
+      });
+      return { ...prevCarts, items: newItems };
+    });
+
+    const updateCart = debounce(() => {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/customer/cart/add-to-cart`,
+          {
+            productId: productId,
+            qty: change,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${cookie.token ? cookie.token : ""}`,
+            },
+          }
+        )
+        .then(() => {
+          fetch();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, 500);
+
+    updateCart();
+  };
 
   const handleRemoveItem = (productId: number, cartId: number) => {
     axios
@@ -76,7 +105,13 @@ export default function ShopCartPage() {
       <Head title={"ShopCartPage"} />
       <Layout>
         <Container maxW={"8xl"} mx="auto">
-          <Box alignSelf="center" textAlign="center" maxW="max" marginBottom={"6"} mx="auto">
+          <Box
+            alignSelf="center"
+            textAlign="center"
+            maxW="max"
+            marginBottom={"6"}
+            mx="auto"
+          >
             <Text className="" fontWeight={"bold"} fontSize="3xl">
               Your Shopping Cart
             </Text>
@@ -128,26 +163,42 @@ export default function ShopCartPage() {
                     <div className="p-5">
                       <h1 className="text-lg font-bold">{item.price}$</h1>
                       <p className="mt-5">{item.name}</p>
-                      <Flex className="mt-5">
-                        <div>
-                          <AiOutlineMinus className="text-2xl border p-1 rounded-full " />
-                        </div>
+                      <div className="mt-5 flex">
+                        <AiOutlineMinus
+                          onClick={() => {
+                            if (item.qty > 1) {
+                              setItemId(item.id);
+                              setInc(-1);
+                              setUpdate(!update);
+                            }
+                          }}
+                          className="text-2xl border p-1 rounded-full hover:text-red-500"
+                        />
                         <Input
                           w="10"
                           border={"none"}
                           textAlign={"center"}
                           max="99"
-                          min="0"
+                          min="1"
                           h="6"
                           px="1"
                           type="number"
                           defaultValue={item.qty}
+                          value={item.qty}
                           className="mx-2 font-light"
                         />
-                        <div>
-                          <AiOutlinePlus className="text-2xl border  p-1 rounded-full" />
-                        </div>
-                      </Flex>
+
+                        <AiOutlinePlus
+                          onClick={() => {
+                            if (item.qty < 99) {
+                              setItemId(item.id);
+                              setInc(1);
+                              setUpdate(!update);
+                            }
+                          }}
+                          className="text-2xl border p-1 rounded-full hover:text-red-500"
+                        />
+                      </div>
                     </div>
                   </Flex>
                 </Box>

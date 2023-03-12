@@ -61,7 +61,8 @@ const ProductList: React.FC<{ products: Product[]; refetch: VoidFunction }> = ({
                 top={0}
                 position="sticky"
                 fontSize="md"
-
+                maxW="30ch"
+                w="25ch"
               >
                 Product Title
               </Th>
